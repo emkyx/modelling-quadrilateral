@@ -1,24 +1,82 @@
+import math
+
+
+def main():
+    # Initialize empty lists to store the quadrilateral
+    # quadrilateral = []
+    # quadrilateral = [(1,1), (1,-1), (-1,-1), (-1,1)]
+
+    quadrilateral = get_coordinates()
+
+    quadrilateral = sort_points_anticlockwise(quadrilateral)
+
+    # print(f"sorted quadrilateral={quadrilateral}")
+
+    properties = get_properties(quadrilateral)
+
+    # Output results
+    print("Properties of the quadrilateral:")
+    print(f"One pair of parallel sides: {properties['one_pair_parallel_sides']}")
+    print(f"Two pairs of parallel sides: {properties['two_pairs_parallel_sides']}")
+    print(f"All sides equal: {properties['all_sides_equal']}")
+    print(f"All angles 90 degrees: {properties['all_angles_90_degrees']}")
+    print(f"Two pairs of adjacent equal sides: {properties['two_pairs_of_adjacent_equal_sides']}")
+
+    print(f"Perpendicularity of diagonals: {properties['diagonals_perpendicular']}")
+    print(f"One diagonal bisecting another: {properties['one_diagonal_bisects_the_other']}")
+    print(f"Both diagonals bisecting each other: {properties['both_diagonal_bisects_each_other']}")
+    print(f"One diagonal bisecting the angles it passes through: {properties['one_diagonal_bisects_angle']}")
+    print(f"Both diagonals bisecting the angles they pass through: {properties['both_diagonals_bisect_angles']}")
+    print(f"Diagonals being equal in length: {properties['diagonals_equal']}")
+
+    name = {
+        "trapezium": False,
+        "kite": False,
+        "parallelogram": False,
+        "rectangle": False,
+        "rhombus": False,
+        "square": False,
+    }
+
+    # Check side length and angle properties
+    name["trapezium"] = properties["one_pair_parallel_sides"]
+
+    name["kite"] = properties["two_pairs_of_adjacent_equal_sides"]
+
+    name["parallelogram"] = properties["one_pair_parallel_sides"] and properties["two_pairs_parallel_sides"]
+
+    name["rectangle"] = properties["one_pair_parallel_sides"] and properties["two_pairs_parallel_sides"] \
+                        and properties["all_angles_90_degrees"]
+
+    name["rhombus"] = properties["one_pair_parallel_sides"] and properties["two_pairs_parallel_sides"] \
+                      and properties["all_sides_equal"] and properties["two_pairs_of_adjacent_equal_sides"]
+
+    name["square"] = properties["one_pair_parallel_sides"] and properties["two_pairs_parallel_sides"] \
+                     and properties["all_sides_equal"] and properties["all_angles_90_degrees"] \
+                     and properties["two_pairs_of_adjacent_equal_sides"]
 
     print("After checking side length and angle properties")
     print(f"name={name}")
 
     name["kite"] = properties["diagonals_perpendicular"] \
-                    and properties["one_diagonal_bisects_the_other"]  \
-                    and properties["one_diagonal_bisects_angle"]
+                   and properties["one_diagonal_bisects_the_other"] \
+                   and properties["one_diagonal_bisects_angle"]
 
-    name["parallelogram"] = properties["one_diagonal_bisects_the_other"] and properties["both_diagonal_bisects_each_other"]
+    name["parallelogram"] = properties["one_diagonal_bisects_the_other"] and properties[
+        "both_diagonal_bisects_each_other"]
 
     name["rectangle"] = properties["one_diagonal_bisects_the_other"] and properties["both_diagonal_bisects_each_other"] \
-                    and properties["diagonals_equal"]
+                        and properties["diagonals_equal"]
 
     name["rhombus"] = properties["diagonals_perpendicular"] \
-                    and properties["one_diagonal_bisects_the_other"] and properties["both_diagonal_bisects_each_other"] \
-                    and properties["one_diagonal_bisects_angle"] and properties["both_diagonals_bisect_angles"]
+                      and properties["one_diagonal_bisects_the_other"] and properties[
+                          "both_diagonal_bisects_each_other"] \
+                      and properties["one_diagonal_bisects_angle"] and properties["both_diagonals_bisect_angles"]
 
     name["square"] = properties["diagonals_perpendicular"] \
-                    and properties["one_diagonal_bisects_the_other"] and properties["both_diagonal_bisects_each_other"] \
-                    and properties["one_diagonal_bisects_angle"] and properties["both_diagonals_bisect_angles"] \
-                    and properties["diagonals_equal"]
+                     and properties["one_diagonal_bisects_the_other"] and properties["both_diagonal_bisects_each_other"] \
+                     and properties["one_diagonal_bisects_angle"] and properties["both_diagonals_bisect_angles"] \
+                     and properties["diagonals_equal"]
 
     print("After checking properties of diagonals")
     print(f"name={name}")
@@ -39,7 +97,7 @@ def get_coordinates():
             # Split the input into x and y values
             x_str, y_str = coordinate_str.split(',')
 
-             # Try to convert x and y to floating-point numbers
+            # Try to convert x and y to floating-point numbers
             try:
                 x = float(x_str)
                 y = float(y_str)
@@ -49,6 +107,33 @@ def get_coordinates():
                 print("Invalid input. Please enter valid numeric coordinates.")
 
     return coordinates
+
+
+def calculate_angle(point, centroid):
+    x, y = point
+    cx, cy = centroid
+
+    # print(f"x={x}, y={y}, cx={cx}, cy={cy}, atan2={math.atan2(y - cy, x - cx)}, angle={math.atan2(y - cy, x - cx)*180/math.pi}")
+
+    # math.atan2 return radian
+    # angle = (radian*180)/pi
+    return math.atan2(y - cy, x - cx)
+
+
+def sort_points_anticlockwise(points):
+    # Calculate the centroid
+    cx = sum(x for x, y in points) / 4
+    cy = sum(y for x, y in points) / 4
+
+    # Calculate angles for each point with respect to the centroid
+    angles = [(point, calculate_angle(point, (cx, cy))) for point in points]
+    # print(f"angles={angles}")
+
+    # Sort points based on angles in ascending order
+    sorted_points = [point for point, angle in sorted(angles, key=lambda x: x[1])]
+
+    return sorted_points
+
 
 def calculate_slope(point1, point2):
     # Calculate the slope (gradient) of a line given two points
@@ -73,6 +158,7 @@ def is_parallel(line1, line2):
     else:
         return abs(slope1 - slope2) < 1e-6
 
+
 def distance(point1, point2):
     x1, y1 = point1
     x2, y2 = point2
@@ -94,14 +180,14 @@ def is_right_angle(side1, side2, side3):
     a, b, c = sides
 
     # Check if it's a right angle by comparing the squares of the sides
-    if abs(a**2 + b**2 - c**2) < 1e-6:
+    if abs(a ** 2 + b ** 2 - c ** 2) < 1e-6:
         return True
     else:
         return False
 
 
 def is_all_angles_90_degrees(side1_length, side2_length, side3_length, side4_length, \
-                                                             diagonal1_length, diagonal2_length):
+                             diagonal1_length, diagonal2_length):
     angle1 = is_right_angle(side1_length, side2_length, diagonal1_length)
     angle2 = is_right_angle(side2_length, side3_length, diagonal2_length)
     angle3 = is_right_angle(side3_length, side4_length, diagonal1_length)
@@ -114,7 +200,6 @@ def is_diagonals_equal(diagonal1_length, diagonal2_length):
     return abs(diagonal1_length - diagonal2_length) < 1e-6
 
 
-
 def is_perpendicular(line1, line2):
     slope1 = calculate_slope(line1[0], line1[1])
     slope2 = calculate_slope(line2[0], line2[1])
@@ -125,7 +210,7 @@ def is_perpendicular(line1, line2):
     if slope1 == float('inf') and slope2 == 0:
         return True
 
-    return slope1*slope2 == -1
+    return slope1 * slope2 == -1
 
 
 def midpoint(point1, point2):
@@ -201,7 +286,7 @@ def does_line_bisect_the_other(line1, line2):
 
 
 def do_diagonals_bisect_angles(side1_length, side2_length, side3_length, side4_length, \
-                                    diagonal1_length, diagonal2_length):
+                               diagonal1_length, diagonal2_length):
     # Use law of consines
     # quadrilateral ABCD
     cosCAB = (side1_length ** 2 + diagonal1_length ** 2 - side2_length ** 2) / 2 * side1_length * diagonal1_length
@@ -222,8 +307,9 @@ def do_diagonals_bisect_angles(side1_length, side2_length, side3_length, side4_l
 
     return (diagonal1_bisects or diagonal2_bisects, diagonal1_bisects and diagonal2_bisects)
 
-    def get_properties(quadrilateral):
-        #print(f"quadrilateral={quadrilateral}")
+
+def get_properties(quadrilateral):
+    # print(f"quadrilateral={quadrilateral}")
 
     properties = {
         "one_pair_parallel_sides": False,
@@ -254,17 +340,18 @@ def do_diagonals_bisect_angles(side1_length, side2_length, side3_length, side4_l
 
     # Calculate diagonal lengths
     diagonal1_length = distance(quadrilateral[0], quadrilateral[2])
-    diagonal2_length  = distance(quadrilateral[1], quadrilateral[3])
+    diagonal2_length = distance(quadrilateral[1], quadrilateral[3])
 
     # Check properties
     properties["one_pair_parallel_sides"] = is_parallel(side1, side3)
 
-    properties["two_pairs_parallel_sides"]  = properties["one_pair_parallel_sides"] and is_parallel(side2, side4)
+    properties["two_pairs_parallel_sides"] = properties["one_pair_parallel_sides"] and is_parallel(side2, side4)
 
     properties["all_sides_equal"] = is_all_sides_equal(side1_length, side2_length, side3_length, side4_length)
 
-    properties["all_angles_90_degrees"] = is_all_angles_90_degrees(side1_length, side2_length, side3_length, side4_length,
-                                                             diagonal1_length, diagonal2_length)
+    properties["all_angles_90_degrees"] = is_all_angles_90_degrees(side1_length, side2_length, side3_length,
+                                                                   side4_length,
+                                                                   diagonal1_length, diagonal2_length)
 
     properties["two_pairs_of_adjacent_equal_sides"] = \
         is_two_pairs_of_adjacent_equal_sides(side1_length, side2_length, side3_length, side4_length)
@@ -273,11 +360,13 @@ def do_diagonals_bisect_angles(side1_length, side2_length, side3_length, side4_l
     properties["one_diagonal_bisects_the_other"] = does_line_bisect_the_other(diagonal1, diagonal2)
     properties["both_diagonal_bisects_each_other"] = do_lines_bisect_each_other(diagonal1, diagonal2)
     properties["one_diagonal_bisects_angle"], properties["both_diagonals_bisect_angles"] = \
-        do_diagonals_bisect_angles(side1_length, side2_length, side3_length, side4_length, diagonal1_length, diagonal2_length)
+        do_diagonals_bisect_angles(side1_length, side2_length, side3_length, side4_length, diagonal1_length,
+                                   diagonal2_length)
 
-    properties["diagonals_equal"]= is_diagonals_equal(diagonal1_length, diagonal2_length)
+    properties["diagonals_equal"] = is_diagonals_equal(diagonal1_length, diagonal2_length)
 
     return properties
+
 
 if __name__ == "__main__":
     main()
