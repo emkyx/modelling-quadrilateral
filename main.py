@@ -1,41 +1,4 @@
-import math
 
-def main():
-    # Initialize empty lists to store the quadrilateral
-    # quadrilateral = []
-    # quadrilateral = [(1,1), (1,-1), (-1,-1), (-1,1)]
-
-    quadrilateral = get_coordinates()
-
-    quadrilateral = sort_points_anticlockwise(quadrilateral)
-
-    # print(f"sorted quadrilateral={quadrilateral}")
-
-    properties = get_properties(quadrilateral)
-
-    # Output results
-    print("Properties of the quadrilateral:")
-    print(f"One pair of parallel sides: {properties['one_pair_parallel_sides']}")
-    print(f"Two pairs of parallel sides: {properties['two_pairs_parallel_sides']}")
-    print(f"All sides equal: {properties['all_sides_equal']}")
-    print(f"All angles 90 degrees: {properties['all_angles_90_degrees']}")
-    print(f"Two pairs of adjacent equal sides: {properties['two_pairs_of_adjacent_equal_sides']}")
-
-    print(f"Perpendicularity of diagonals: {properties['diagonals_perpendicular']}")
-    print(f"One diagonal bisecting another: {properties['one_diagonal_bisects_the_other']}")
-    print(f"Both diagonals bisecting each other: {properties['both_diagonal_bisects_each_other']}")
-    print(f"One diagonal bisecting the angles it passes through: {properties['one_diagonal_bisects_angle']}")
-    print(f"Both diagonals bisecting the angles they pass through: {properties['both_diagonals_bisect_angles']}")
-    print(f"Diagonals being equal in length: {properties['diagonals_equal']}")
-
-    name = {
-        "trapezium": False,
-        "kite": False,
-        "parallelogram": False,
-        "rectangle": False,
-        "rhombus": False,
-        "square": False,
-    }
 
     # Check side length and angle properties
     name["trapezium"] = properties["one_pair_parallel_sides"]
