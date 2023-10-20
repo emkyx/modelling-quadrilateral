@@ -117,21 +117,6 @@ def calculate_angle(point, centroid):
     return math.atan2(y - cy, x - cx)
 
 
-def sort_points_anticlockwise(points):
-    # Calculate the centroid
-    cx = sum(x for x, y in points) / 4
-    cy = sum(y for x, y in points) / 4
-
-    # Calculate angles for each point with respect to the centroid
-    angles = [(point, calculate_angle(point, (cx, cy))) for point in points]
-    # print(f"angles={angles}")
-
-    # Sort points based on angles in ascending order
-    sorted_points = [point for point, angle in sorted(angles, key=lambda x: x[1])]
-
-    return sorted_points
-
-
 def calculate_slope(point1, point2):
     # Calculate the slope (gradient) of a line given two points
     # print(f"calculate_slope--point1={point1}, point2={point2}")
