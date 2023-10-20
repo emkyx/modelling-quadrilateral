@@ -105,18 +105,6 @@ def get_coordinates():
 
     return coordinates
 
-
-def calculate_angle(point, centroid):
-    x, y = point
-    cx, cy = centroid
-
-    # print(f"x={x}, y={y}, cx={cx}, cy={cy}, atan2={math.atan2(y - cy, x - cx)}, angle={math.atan2(y - cy, x - cx)*180/math.pi}")
-
-    # math.atan2 return radian
-    # angle = (radian*180)/pi
-    return math.atan2(y - cy, x - cx)
-
-
 def calculate_slope(point1, point2):
     # Calculate the slope (gradient) of a line given two points
     # print(f"calculate_slope--point1={point1}, point2={point2}")
