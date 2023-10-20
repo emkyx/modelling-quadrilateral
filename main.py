@@ -1,22 +1,4 @@
 
-
-    # Check side length and angle properties
-    name["trapezium"] = properties["one_pair_parallel_sides"]
-
-    name["kite"] = properties["two_pairs_of_adjacent_equal_sides"]
-
-    name["parallelogram"] = properties["one_pair_parallel_sides"] and properties["two_pairs_parallel_sides"]
-
-    name["rectangle"] = properties["one_pair_parallel_sides"] and properties["two_pairs_parallel_sides"] \
-                        and properties["all_angles_90_degrees"]
-
-    name["rhombus"] = properties["one_pair_parallel_sides"] and properties["two_pairs_parallel_sides"] \
-                    and properties["all_sides_equal"] and properties["two_pairs_of_adjacent_equal_sides"]
-
-    name["square"] = properties["one_pair_parallel_sides"] and properties["two_pairs_parallel_sides"] \
-                    and properties["all_sides_equal"] and  properties["all_angles_90_degrees"] \
-                    and properties["two_pairs_of_adjacent_equal_sides"]
-
     print("After checking side length and angle properties")
     print(f"name={name}")
 
