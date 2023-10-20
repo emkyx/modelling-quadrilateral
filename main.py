@@ -308,7 +308,7 @@ def do_diagonals_bisect_angles(side1_length, side2_length, side3_length, side4_l
     return (diagonal1_bisects or diagonal2_bisects, diagonal1_bisects and diagonal2_bisects)
 
 
-def get_properties(quadrilateral):
+
     # print(f"quadrilateral={quadrilateral}")
 
     properties = {
